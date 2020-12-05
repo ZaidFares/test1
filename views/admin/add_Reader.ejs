@@ -1,0 +1,31 @@
+<%- include('master_header'); -%>
+<style>
+  .form-control {
+    -webkit-box-shadow: inset 0 0px 0 rgba(0,0,0,0.075);
+    box-shadow: inset 0 px 0 rgba(0,0,0,0.075);
+}
+</style>
+<form action="/api/gateway/AddReader" method="POST">
+    <div class="form-group row">
+      <label for="ReaderName" class="col-sm-2 col-form-label">Reader Name</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="ReaderName" id="ReaderName">
+      </div>
+    </div>
+    <div class="form-group row">
+        <label for="Description" class="col-sm-2 col-form-label">Description</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="Description" id="Description">
+        </div>
+      </div>
+    
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <a href="/api/gateway/index/" style="margin-right: 0.5rem; margin-left: 0.5rem;" class="float-right btn btn-primary">Back</a>
+        <button type="submit" class="float-right btn btn-primary">Add</button>
+      </div>
+    </div>
+  </form>
+
+
+<%- include('master_footer'); -%>

@@ -1,0 +1,22 @@
+<!--
+ Copyright (c) 2019, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="oj-hybrid-padding">
+
+    <div id="logs-container" class="oj-flex">
+        <oj-tab-bar id="hnavlist" edge="top"
+              selection="{{selectedItem}}"
+              on-selection-changed="[[handleSelectionChange]]">
+            <ul data-bind="foreach: logItems">
+                <li data-bind="attr: {id: id}">
+                    <a href="#" data-bind="text: label"></a>
+                </li>
+            </ul>
+        </oj-tab-bar>
+    </div>
+    <div class="oj-flex" style="min-width:100%; max-height:800px; margin-top: 2px;">
+        <iframe data-bind="attr: {src: logviewUrl}" style="border:none; width: 100%; height: -webkit-fill-available"></iframe>
+    </div>
+</div>
+</div>

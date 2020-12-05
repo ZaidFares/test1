@@ -1,0 +1,29 @@
+{
+  "name": "node-gateway-server",
+  "version": "1.0.0",
+  "description": "Gateway application",
+  "main": "server.js",
+  "dependencies": {
+    "bootstrap": "^3.4.1",
+    "cookie-parser": "^1.4.5",
+    "csv-parser": "^2.3.3",
+    "debug": "^4.1.1",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "fs-extra": "^9.0.1",
+    "iotcs-csl-js": "^19.1.5",
+    "mode-device": "^1.4.0",
+    "multer": "^1.4.2",
+    "node-forge": "^0.10.0",
+    "node-xlsx": "^0.15.0",
+    "restify": "^8.5.1",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "CSG",
+  "license": "ISC"
+}

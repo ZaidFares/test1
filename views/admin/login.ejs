@@ -1,0 +1,27 @@
+<%- include('login_header'); -%>
+
+<div class="container">
+    <div class="panel panel-default col-sm-6" style="margin: auto; margin-top: 3rem;">
+        <div class="panel-body">
+
+            <div class="alert alert-info" role="alert" style="text-align: center;">Fixed RFID Readers Admin Portal</div>
+            <form action="/api/gateway/index" method="POST" class="form-signin">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="User Name" required=""
+                    autofocus="">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
+                <!-- <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div> -->
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<%- include('login_footer'); -%>

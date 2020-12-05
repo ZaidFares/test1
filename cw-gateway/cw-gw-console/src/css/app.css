@@ -1,0 +1,191 @@
+/*
+ * Copyright (c) 2019, Oracle and/or its affiliates.  All rights reserved.
+ * This software is dual-licensed to you under the MIT License (MIT) and
+ * the Universal Permissive License (UPL).  See the LICENSE file in the legal
+ * directory for license terms.  You may choose either license, or both.
+ *
+ */
+
+.panel-heading {
+    background-color: #d8e6de;
+    font-size: large;
+    color: #616365;
+    align-items: center;
+    padding-left: 10px;
+    margin-top: 5px;
+}
+
+.panel-bg {
+    background-color: #ecf3ef;
+}
+
+
+.dashboard-heading {
+    background-color: #4f8c23;
+    color:    #f9f7f7 !important;
+    font-size: x-large;
+    padding: 4px;
+}
+
+.node-card {
+    width: 100% !important;
+    background-color: white;
+    border-style: solid  !important;
+    border-width: 2px!important;
+    border-color: #dde6de !important;
+}
+
+.device-status-ONLINE {
+    color:  #009638;
+    font-size: medium;
+    padding-right: 5px;
+
+}
+.device-status-OFFLINE {
+    color: #ff3333;
+    font-size: medium;
+    padding-right: 5px;
+}
+
+.data-text  {
+    color: #666666;
+    font-size:  25px;
+    margin-bottom: 20px;
+
+}
+
+.node-device-data-text  {
+    color: #666666;
+    font-size:  15px;
+
+}
+.node-device-data-label  {
+    color: #666666;
+    font-size:  15px;
+
+}
+
+.node-device-data-header  {
+    color: #adb139;
+    font-size: 20px;
+
+}
+
+.data-title {
+    color: #333333;
+    font-size: 35px;
+    margin-bottom:  20px;
+
+}
+.data-label {
+    color: #999999;
+    font-size: 25px;
+    padding-right: 5px;
+    margin-top: 10px;
+}
+
+.summary-numbers {
+    font-size: 75px;
+    margin-top: 20px;
+}
+
+.summary-text {
+    font-size: x-large;
+    font-family: serif;
+    margin-bottom: 20px;
+}
+
+.summary-connected {
+    color: #ff6633;
+}
+
+.summary-inuse {
+    color: #6aa84f;
+}
+
+.summary-alerts {
+    color: #cf2a27;
+}
+
+.node-device-list {
+    color: #085394;
+}
+
+.summary-heading {
+    color: darkcyan;
+    margin-left: 2px;
+}
+
+.summary-card {
+    height: 150px;
+    border-style: groove;
+    border-width: 1px;
+    border-color: rgba(230, 230, 230, 0.45);
+}
+
+.panel-heading {
+    font-size: large;
+    color: #616365;
+    padding: 10px;
+    width: 100%;
+    background-color: #dde6de;
+    margin-top: 5px;
+}
+
+.panel-heading span {
+    margin-right: 10px;
+}
+
+.alert-severity-SIGNIFICANT {
+    color: red;
+}
+
+.alert-text {
+    font-size: large;
+    color:  #333333;
+    margin-left: 2px;
+}
+
+
+.device-summary-label {
+    font-size: large;
+    color:  rgb(130, 121, 121);
+}
+
+.device-summary-text {
+    font-size: large;
+    color:  rgb(130, 121, 121);
+    align-self: center;
+}
+
+.device-summary-value {
+    font-size: -webkit-xxx-large;
+    margin-right: 10px;
+    align-self: center;
+}
+.device-summary-units {
+    font-size: medium;
+    margin-right: 5px;
+    align-self: center;
+}
+
+#device-info-form label {
+    color: #085394;
+    font-size: large;
+}
+
+#device-info-form input {
+    background-color:  #e2e2e2;
+    color:  #666666;
+    font-size: medium;
+    padding-left: 5px;
+}
+
+#details-tabs li {
+    font-size: large;
+    padding: 3px;
+}
+
+.node-control-icons {
+    font-size: x-large;
+}

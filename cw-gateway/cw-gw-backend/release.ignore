@@ -1,0 +1,16 @@
+.npmrc
+gulpfile.js
+release.ignore
+.server.js.swp
+cw_install.log
+cw_install.sh
+setup-gateway.sh
+setup-node.sh
+tester.js
+Gruntfile.js
+.editorconfig
+.eslintrc.js
+.gitignore
+.jshintrc
+oraclejetconfig.json
+README.md

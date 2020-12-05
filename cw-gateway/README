@@ -1,0 +1,45 @@
+TODO -- This documentation will contain link to Oracle online documentation when available. (IOT-60325)
+
+Connected Worker Stationary Gateway and Node for BLE devices
+
+This package contains build of both Connected Worker gateway and Node for 
+Raspberry Pi running Raspbian OS. Gateway requires Raspberry Pi v3 with BLE and WiFi.
+Node implementation runs on Raspberry Pi Zero with BLE and Wifi.
+
+After unpacking cw-gateway.tar.gz on the device, change directory into cw-gateway/cw-gw-backend and run
+(before executing cw_setup make sure you have properly set up proxy - see Proxy settings below)
+
+sudo -E ./cw_setup.sh
+
+Shell script will guide you through installation steps. On the gateway device answer Y to 'Setup Gateway?' prompt.
+On the node device answer N to this prompt and answer Y to 'Setup Node?'.
+
+Gateway must be provisioned in order to communicate with IoT / CW backend. Save your provisioning file as 
+cw-gateway/cw-gw-backend/cw-gw-1.csv. In case of different name you will need to update iotcs.provisioningFile 
+in cw-gateway/cw-gw-backend/config/settings.json. Optionaly change provisioningPassword and other parameters if
+needed.
+
+To run CW Gateway go to cw-gateway/cw-gw-backend and run
+
+./run-server.sh
+
+To run CW Node go to cw-gateway/cw-gw-backend and run
+
+./run-client.sh
+
+Web console runs on the gateway port specified during gateway setup (e.g. 9000)
+
+http://GATEWAY_HOST:GATEWAY_PORT/console
+
+
+Proxy settings:
+If you are behind a proxy server, you will need to 
+
+export http_proxy=http://YOUR_PROXY:YOUR_PROXY_PORT/
+export https_proxy=http://YOUR_PROXY:YOUR_PROXY_PORT/
+
+and make sure you have properly configured apt proxy in /etc/apt.conf
+
+sudo nano /etc/apt/apt.conf
+
+Acquire::http::Proxy "http://YOUR_PROXY:YOUR_PROXY_PORT";

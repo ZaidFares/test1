@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2019, Oracle and/or its affiliates.  All rights reserved.
+This software is dual-licensed to you under the MIT License (MIT) and
+the Universal Permissive License (UPL).  See the LICENSE file in the legal
+directory for license terms.  You may choose either license, or both.
+
+-->
+
+<div class="oj-hybrid-padding">
+  <!-- Heading -->
+  <div class="oj-flex oj-flex-bar dashboard-heading">
+    <div class="oj-flex-bar-start oj-sm-align-items-center">
+      <span>Settings</span>
+    </div>
+    <div class="oj-flex-bar-end">
+      <!-- <button data-bind="
+                ojComponent: {
+                    component: 'ojButton',
+                    display: 'icons',
+                    chroming: 'half',
+                    icons: {start: 'icon-refresh dashboard-heading'},
+                    label: 'refresh'},
+                click: handleRefreshButtonClicked">
+      </button> -->
+    </div>
+  </div>
+  <div id="vtabs-container" style="margin-top: 2px;">
+    <div id="vtabs" class="oj-tabs-icon-only" data-bind="ojComponent:{component: 'ojTabs',edge: 'start'}">
+      <ul>
+        <li>
+          <span class="demo-icon-font-24 icon-server oj-tabs-tab-icon" title="Gateway" aria-label="Library" role="img"></span>
+        </li>
+        <li>
+          <span class="demo-icon-font-24 icon-account oj-tabs-tab-icon" title="Node" aria-label="Analytics" role="img"></span>
+        </li>
+
+      </ul>
+
+
+
+      <!-- Gateway Settings -->
+      <div id="tabs-1">
+
+        <div id="accordionPage" data-bind="ojComponent: {component: 'ojAccordion'}">
+          <div id="c1">
+            <span>Gateway Configuration</span>
+            <div data-bind="template: {name: 'gateway_config_form'}"></div>
+          </div>
+          <div id="c21">
+            <span>Global Node Settings</span>
+            <div>
+                <oj-collapsible>
+                    <h4 slot="header">Bluetooth Settings</h4>
+                    <div data-bind="template: {name: 'node_settings_form'}"></div>
+                </oj-collapsible>
+                <oj-collapsible>
+                    <h4 slot="header">MetaWear Settings</h4>
+                    <div data-bind="template: {name: 'metawear_settings_form'}"></div>
+                </oj-collapsible>
+                <oj-collapsible>
+                    <h4 slot="header">Generic BLE Device Settings</h4>
+                    <div data-bind="template: {name: 'generic_device_settings_form'}"></div>
+                </oj-collapsible>
+                <oj-collapsible>
+                    <h4 slot="header">iBeacon Settings</h4>
+                    <div data-bind="template: {name: 'ibeacon_device_settings_form'}"></div>
+                </oj-collapsible>
+            </div>
+
+          </div>
+          <div id="c3">
+            <span>IoTCS Configuration</span>
+              <div data-bind="template: {name: 'iotcs_settings_form'}"></div>
+          </div>
+          <div id="c4">
+              <span>Connected Worker Configuration</span>
+                <div data-bind="template: {name: 'cw_settings_form'}"></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 2px;
+                     padding: 5px;
+                     border-top-style: solid;
+                     border-width: thin;
+                     border-top-color: #d6dfe6;">
+
+          <oj-button id='button1' on-click='[[handleSaveClicked]]'>
+            <span slot="startIcon" class='icon-ok' style="color:blue"></span>
+            Save
+          </oj-button>
+          <oj-button id='button2' on-click='[[handleCancelClicked]]'>
+              <span slot="startIcon" class="icon-cross-circle" style="color: rgba(233, 80, 41, 0.877)">
+              </span>
+              Cancel
+          </oj-button>
+          <oj-button id='button3' on-click='[[handleRestartClicked]]' style="margin-left: 50px;">
+              <span slot="startIcon" class="icon-refresh" style="color: rgb(10, 116, 7);"></span>
+              Restart Server
+          </oj-button>
+          <oj-button id='button4' on-click='[[handleRebootClicked]]'>
+              <span chroming="half" slot="startIcon" class="icon-server" style="color: red;"></span>
+              Reboot Gateway
+          </oj-button>
+          <oj-button id='button4' on-click='[[handlePowerOffClicked]]'>
+              <span chroming="half" slot="startIcon" class="icon-remove" style="color: rgb(105, 7, 7);"></span>
+              Power Off
+          </oj-button>
+          <oj-button id='button5' on-click='[[handleShellClicked]]'>
+            <span chroming="half" slot="startIcon" class="icon-management" style="color: rgba(5, 50, 77, 0.986);"></span>
+            SSH
+        </oj-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sshDialog">
+    <oj-dialog style="display:none; min-width: 800px; min-height: 600px;" id="sshModal" title="SSH">
+        <div slot="body">
+            <iframe data-bind="attr: {src: sshURL}" style="width: 100%; min-height: 600px;"></iframe>
+        </div>
+        <div slot="footer">
+            <oj-button id="okButton" data-bind="click: function() {
+                document.querySelector('#sshModal').close();
+                }"> OK
+            </oj-button>
+        </div>
+    </oj-dialog>
+  </div>
+
+  <!-- Confirm Dialog -->
+  <div id="confirmDialog">
+      <oj-dialog style="display:none" id="confirmModal" title="Confirm">
+          <div slot="body">
+              <p style="margin-top: 5px;">
+                  <span data-bind="text: confirm.text"></span>
+              </p>
+              <strong data-bind="text: confirm.details"></strong>
+          </div>
+          <div slot="footer">
+              <oj-button id="okButton" data-bind="click: handleConfirmOK" >OK</oj-button>
+              <oj-button id="cancelButton" data-bind="click: function() {
+                  document.querySelector('#confirmModal').close();
+                  }"> Canel
+              </oj-button>
+          </div>
+      </oj-dialog>
+  </div>
+
+  <!-- Message Dialog -->
+  <div id="messageDialog">
+      <oj-dialog style="display:none" id="messageModal" title="Success">
+          <div slot="body">
+              <p style="margin-top: 5px;">
+                  <span data-bind="text: confirm.text"></span>
+              </p>
+              <strong data-bind="text: confirm.details"></strong>
+          </div>
+          <div slot="footer">
+              <oj-button id="okButton" data-bind="click: function() {
+                  document.querySelector('#messageModal').close();
+                  }"> OK
+              </oj-button>
+          </div>
+      </oj-dialog>
+  </div>
+
+
+  <!-- Error Dialog -->
+  <div style="display:none" id="settingsErrorDialog" title="" data-bind="ojComponent:{component: 'ojDialog',
+                                 initialVisibility: 'hide',
+                                 rootAttributes: {style: 'width: 450px;'}}">
+    <div class="oj-dialog-header oj-helper-clearfix">
+      <span id="dialogTitleId" class="oj-dialog-title icon-warning" style="color: red;">
+        <span style="margin-left: 5px;" data-bind="text:  'Error'"> </span>
+      </span>
+    </div>
+    <div class="oj-dialog-body">
+
+      <p style="margin-top: 5px;">
+        <span data-bind="text: errorMessage.text"></span>
+      </p>
+      <strong data-bind="text: errorMessage.details"></strong>
+    </div>
+    <div class="oj-dialog-footer">
+      <button id="okButton" data-bind="ojComponent: {component: 'ojButton', label: 'OK'}, click: handleOKClose">
+      </button>
+    </div>
+  </div>
+
+
+  <!-- Gateway Settings form -->
+  <script type="text/html" id="gateway_config_form">
+    <div id="form-container">
+      <div class="oj-form-layout">
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="serverListenPortInput">Server Listen Port</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-input-number id="serverListenPortInput" max="9999" min="1024" step="1" value="{{serverSettings.listenPort}}" required></oj-input-number>
+            </div>
+          </div>
+
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="serverHostInput">Server Host Address</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-input-text id="serverHostInput" value="{{serverSettings.host}}" required></oj-input-text>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+</script>
+
+<!-- Node settings -->
+<script type="text/html" id="node_settings_form">
+  <div id="sampleDemo" style="" class="demo-padding demo-container">
+
+    <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+      <div id="form-container">
+        <oj-form-layout id="ofl1" label-edge="start" max-columns="2">
+          <oj-input-number id="rssiSampleSize" max="20" min="5" required value="{{nodeSettings.rssiSampleSize}}" label-hint="RSSI Sample Size"
+            help.instruction="Number of RSSI readings to sample to compute the distance">
+          </oj-input-number>
+          <oj-input-number id="maxRange" max="10" min="3" required value="{{nodeSettings.maxRange}}" help.instruction="Treat device as out-of-range if distance is more than this"
+            label-hint="Out of Range (meters)">
+          </oj-input-number>
+          <oj-input-number id="txPower" max="-50" min="-100" required value="{{nodeSettings.txPower}}" label-hint="TX Power" help.instruction="TX power at 1 meter distance">
+          </oj-input-number>
+          <oj-input-number id="rssiUpdateInterval" max="10000" min="500" step="500" required value="{{nodeSettings.rssiUpdateInterval}}"
+            label-hint="RSSI Update Interval (msecs)" help.instruction="RSSI updates from the sensor at this interval">
+          </oj-input-number>
+          <oj-input-number id="outOfRangeTimeoutMsecs" max=30000 min="1000" step="1000" required value="{{nodeSettings.outOfRangeTimeoutMsecs}}"
+            label-hint="Out Of Range (msecs)" help.instruction="Treat device as out-of-range if device is unreachable for more than this interval">
+          </oj-input-number>
+          <oj-input-number id="watchLoopInterval" max="10000" min="1000" step="100" required value="{{nodeSettings.watchLoopInterval}}" label-hint="Watch Loop Interval"
+            help.instruction="Main loop interval in msecs. Device updates will be sent at this interval">
+          </oj-input-number>
+        </oj-form-layout>
+      </div>
+
+      <div>
+      </div>
+</script>
+
+<!-- MetaWear Settings -->
+<script type="text/html" id="metawear_settings_form">
+
+  <div id="form-container-metawear-settings">
+      <div class="oj-form-layout">
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="mwName">Name</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-input-text id="mwName" value="{{nodeSettings.bleDeviceTypes.metawear.name}}"></oj-input-text>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+            <div class="oj-flex">
+              <div class="oj-flex-item">
+                <oj-label show-required for="mwServiceId">Service ID</oj-label>
+              </div>
+              <div class="oj-flex-item">
+                <oj-input-text id="mwServiceId" style="max-width:30em" value="{{nodeSettings.bleDeviceTypes.metawear.serviceId}}" readonly></oj-input-text>
+              </div>
+            </div>
+          </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+            <div class="oj-flex">
+              <div class="oj-flex-item">
+                  <oj-label show-required for="mwMode">Mode</oj-label>
+              </div>
+              <div class="oj-flex-item">
+                <oj-select-one id="mwMode"  style="max-width:20em" options="{{bleDeviceModes}}" value="{{nodeSettings.bleDeviceTypes.metawear.mode}}">
+                </oj-select-one>
+              </div>
+          </div>
+        </div>
+
+
+          <!-- ko if: nodeSettings.bleDeviceTypes.metawear.mode() === 'full' -->
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+            <div class="oj-flex">
+              <div class="oj-flex-item">
+                  <oj-label show-required for="mwTempFreq">Temperature Update Frequency (seconds)</oj-label>
+              </div>
+              <div class="oj-flex-item">
+                  <oj-input-number id="mwTempFreq"  min="1"  step="1" required value="{{nodeSettings.bleDeviceTypes.metawear.temperatureUpdateFreq}}">
+              </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+            <div class="oj-flex">
+              <div class="oj-flex-item">
+                  <oj-label show-required for="mwBattery">Battery Level Update Frequency (seconds)</oj-label>
+              </div>
+              <div class="oj-flex-item">
+                  <oj-input-number id="mwBattery"  min="1"  step="1" required value="{{nodeSettings.bleDeviceTypes.metawear.batteryUpdateFreq}}">
+              </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+            <div class="oj-flex">
+              <div class="oj-flex-item">
+                  <oj-label show-required for="mwMotionFreq">Motion Detection Frequency (seconds)</oj-label>
+              </div>
+              <div class="oj-flex-item">
+                  <oj-input-number id="mwMotionFreq"  min="1"  step="1" required value="{{nodeSettings.bleDeviceTypes.metawear.motionDetectionFreq}}">
+              </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+            <div class="oj-flex">
+              <div class="oj-flex-item">
+                  <oj-label show-required for="mwMotionSample">Motion Sample Size</oj-label>
+              </div>
+              <div class="oj-flex-item">
+                  <oj-input-number id="mwMotionSample"  min="1"  max="20" required value="{{nodeSettings.bleDeviceTypes.metawear.motionSampleSize}}">
+              </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+            <div class="oj-flex">
+              <div class="oj-flex-item">
+                  <oj-label show-required for="mwMotionThreshold">Motion Detection Threshold</oj-label>
+              </div>
+              <div class="oj-flex-item">
+                  <oj-input-number id="mwMotionThreshold"  min="0.25" step="0.01"  max="1" required value="{{nodeSettings.bleDeviceTypes.metawear.motionThreshold}}"
+                    help.instruction="Motion reported when difference is greater than the threshold for the sample size">
+              </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+                <oj-label show-required for="mwFallDownSampleSize">Fall Down Sample Size</oj-label>
+            </div>
+            <div class="oj-flex-item">
+                <oj-input-number id="mwFallDownSampleSize" min="1" step="1" max="20"
+                  required value="{{nodeSettings.bleDeviceTypes.metawear.fallDownSampleSize}}"
+                  help.instruction="Number of samples to collect to check fall down condition">
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+                <oj-label show-required for="mwFallDownThreshold">Fall Down Threshold</oj-label>
+            </div>
+            <div class="oj-flex-item">
+                <oj-input-number id="mwFallDownThreshold" min="0.25" step="0.01" max="1"
+                  required value="{{nodeSettings.bleDeviceTypes.metawear.fallDownThreshold}}"
+                  help.instruction="Fall down is reported when difference is greater than the threshold for the sample size">
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+                <oj-label show-required for="mwFallDownHeight">Fall Down Height</oj-label>
+            </div>
+            <div class="oj-flex-item">
+                <oj-input-number id="mwFallDownHeight" min="0.5" step="0.5" max="5"
+                  required value="{{nodeSettings.bleDeviceTypes.metawear.fallDownHeight}}"
+                  help.instruction="Height of fall to be alerted">
+            </div>
+          </div>
+        </div>
+        <!-- /ko -->
+
+      </div>
+    </div>
+
+</script>
+
+<!-- Generic device settings -->
+<script type="text/html" id="generic_device_settings_form">
+  <div id="form-container-generic-settings">
+      <div class="oj-form-layout">
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="mwName">Name</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-input-text id="mwName" value="{{nodeSettings.bleDeviceTypes.generic.name}}"></oj-input-text>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="mwServiceId">Service ID</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-input-text id="mwServiceId" style="max-width:30em" value="{{nodeSettings.bleDeviceTypes.generic.serviceId}}"></oj-input-text>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="mwMode">Mode</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-select-one id="mwMode" style="max-width:20em" options="{{bleDeviceModes}}" value="{{nodeSettings.bleDeviceTypes.generic.mode}}">
+              </oj-select-one>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</script>
+
+<!-- iBeacon device settings -->
+<script type="text/html" id="ibeacon_device_settings_form">
+  <div id="form-container-ibeacon-settings">
+      <div class="oj-form-layout">
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="mwName">Name</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-input-text id="mwName" value="{{nodeSettings.bleDeviceTypes.ibeacon.name}}"></oj-input-text>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="mwServiceId">Service ID</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-input-text id="mwServiceId" style="max-width:30em" value="{{nodeSettings.bleDeviceTypes.ibeacon.serviceId}}"></oj-input-text>
+            </div>
+          </div>
+        </div>
+
+        <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="mwMode">Mode</oj-label>
+            </div>
+            <div class="oj-flex-item">
+              <oj-select-one id="mwMode" style="max-width:20em" options="{{bleDeviceModes}}" value="{{nodeSettings.bleDeviceTypes.ibeacon.mode}}">
+              </oj-select-one>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</script>
+
+<!-- IOTCS Settings -->
+<script type="text/html" id="iotcs_settings_form">
+  <div id="form-container-iotcs-settings">
+    <div class="oj-form-layout">
+      <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <oj-label show-required for="provFile">Provisioning File Name</oj-label>
+          </div>
+          <div class="oj-flex-item">
+            <oj-input-text id="provFile" value="{{iotcsSettings.provisioningFile}}" required help.instruction="Provisioning file for the Gateway">
+            </oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <oj-label show-required for="provPassword">Provisioning File Password</oj-label>
+          </div>
+          <div class="oj-flex-item">
+            <oj-input-text id="provPassword" value="{{iotcsSettings.provisioningPassword}}" required></oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <oj-label show-required for="username">IOTCS User Name</oj-label>
+          </div>
+          <div class="oj-flex-item">
+            <oj-input-text id="username" value="{{iotcsSettings.username}}" required></oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <oj-label show-required for="password">IOTCS Password</oj-label>
+          </div>
+          <div class="oj-flex-item">
+            <oj-input-text id="password" value="{{iotcsSettings.password}}" required></oj-input-text>
+          </div>
+        </div>
+
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <oj-label show-required for="project">Project</oj-label>
+          </div>
+          <div class="oj-flex-item">
+            <oj-select-one id="Projects" placeholder="Select a project" style="max-width:20em" options="{{projects}}" value="{{iotcsSettings.cwProjectId}}">
+            </oj-select-one>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<!-- CW Settings -->
+<script type="text/html" id="cw_settings_form">
+  <div id="form-container-iotcs-settings">
+    <div class="oj-form-layout">
+      <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+        <div class="oj-flex">
+          <div class="oj-flex-item">
+            <oj-label show-required for="project">Project</oj-label>
+          </div>
+          <div class="oj-flex-item">
+            <oj-select-one id="Projects" placeholder="Select a project" style="max-width:20em" options="{{projects}}" value="{{iotcsSettings.cwProjectId}}">
+            </oj-select-one>
+          </div>
+        </div>
+      </div>
+
+      <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="noMotionMinutes">Raise Alert when no motion detected for (minutes)</oj-label>
+            </div>
+            <div class="oj-flex-item">
+                <oj-input-number id="noMotionMinutes" max="30" min="1" required value="{{iotcsSettings.cwManDownWhen.noMotionMinutes}}" help.instruction="Raise an alert when no motion is detected for more than this interval"
+                label-hint="Alert when no motion detected for (minutes)">
+            </div>
+          </div>
+      </div>
+
+      <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+          <div class="oj-flex">
+            <div class="oj-flex-item">
+              <oj-label show-required for="alertFreq">Alert Frequency (minutes)</oj-label>
+            </div>
+            <div class="oj-flex-item">
+                <oj-input-number id="alertFreq" max="30" min="1" required value="{{iotcsSettings.cwManDownWhen.alertFrequency}}" help.instruction="Raise alert at this frquency until motion is detected">
+            </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+</script>
+
+<script type="text/html" id="formattedDate">
+  <td class="oj-table-data-cell" data-bind="text: $parent.formatDate(recordTimestamp)"></td>
+</script>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2019, Oracle and/or its affiliates.  All rights reserved.
+This software is dual-licensed to you under the MIT License (MIT) and
+the Universal Permissive License (UPL).  See the LICENSE file in the legal
+directory for license terms.  You may choose either license, or both.
+
+-->
+<div class="oj-hybrid-padding">
+    <!-- Main container -->
+    <div class="oj-flex oj-flex-bar dashboard-heading">
+        <div class="oj-flex-bar-start oj-sm-align-items-center">
+            <span>Dashboard</span>
+        </div>
+        <div class="oj-flex-bar-end">
+
+            <button data-bind="
+            ojComponent: {
+                component: 'ojButton',
+                display: 'icons',
+                chroming: 'half',
+                icons: {start: 'icon-refresh dashboard-heading'},
+                label: 'refresh'},
+            click: refreshButtonClicked">
+            </button>
+        </div>
+
+
+    </div>
+
+    <div class="oj-flex">
+        <div class="oj-lg-12 oj-md-12 oj-sm-12">
+            <!-- <ul id="devicelist" class="oj-listview-card-layout" data-bind="ojComponent:{component: 'ojListView', data: dataSource,
+                        item: {template: 'nodelist_template'},
+                        selectionMode: 'none',
+                        optionChange: showDetails,
+                        rootAttributes: {style: 'width:100%; overflow:auto;'},
+                        scrollPolicyOptions: {'fetchSize': 20},
+                        scrollPolicy: 'loadMoreOnScroll'}">
+            </ul> -->
+            <oj-list-view   id="devicelist"
+                            data="[[nodeListDP]]"
+                            item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('nodelist_template')]]"
+                            selection-required="true"
+                            selection-mode="single">
+            </oj-list-view>
+        </div>
+
+    </div>
+
+    <div id="messageDialog">
+        <oj-dialog style="display:none" id="messageModal" title="Success">
+            <div slot="body">
+                <p style="margin-top: 5px;">
+                    <span data-bind="text: confirm.text"></span>
+                </p>
+                <strong data-bind="text: confirm.details"></strong>
+            </div>
+            <div slot="footer">
+                <oj-button id="okButton" data-bind="click: function() {
+                    document.querySelector('#messageModal').close();
+                    }"> OK
+                </oj-button>
+            </div>
+        </oj-dialog>
+    </div>
+
+    <div id="confirmDialog">
+        <oj-dialog style="display:none" id="confirmModal" title="Confirm">
+            <div slot="body">
+                <p style="margin-top: 5px;">
+                    <span data-bind="text: confirm.text"></span>
+                </p>
+                <strong data-bind="text: confirm.details"></strong>
+            </div>
+            <div slot="footer">
+                <oj-button id="okButton" data-bind="click: handleConfirmOK" >OK</oj-button>
+                <oj-button id="cancelButton" data-bind="click: function() {
+                    document.querySelector('#confirmModal').close();
+                    }"> Canel
+                </oj-button>
+            </div>
+        </oj-dialog>
+    </div>
+
+    <div id="sshDialog">
+        <oj-dialog style="display:none; min-width: 800px; min-height: 600px;" id="sshModal" title="SSH">
+            <div slot="body">
+                <iframe data-bind="attr: {src: sshURL}" style="width: 100%; min-height: 600px;"></iframe>
+            </div>
+            <div slot="footer">
+                <oj-button id="okButton" data-bind="click: function() {
+                    document.querySelector('#sshModal').close();
+                    }"> OK
+                </oj-button>
+            </div>
+        </oj-dialog>
+    </div>
+
+    <div id="errorDialog">
+            <oj-dialog style="display:none" id="errorMessageModal" title="Error" style="color: red;">
+                <div slot="body">
+                    <p style="margin-top: 5px;">
+                        <span data-bind="text: errorMessage.text"></span>
+                    </p>
+                    <strong data-bind="text: errorMessage.details"></strong>
+                </div>
+                <div slot="footer">
+                    <oj-button id="okButton" data-bind="click: function() {
+                        document.querySelector('#errorMessageModal').close();
+                        }"> OK
+                    </oj-button>
+                </div>
+            </oj-dialog>
+        </div>
+
+
+    <div id="nodeEditDialog">
+        <oj-dialog style="display: none" id="nodeEditModal">
+            <div slot="header">
+                <span id="editDialogTitle" class="oj-dialog-title" data-bind="text:  selectedNode.id"></span>
+            </div>
+            <div slot="body">
+                <div class="oj-form-layout">
+                    <div class="oj-form oj-sm-odd-cols-12 oj-md-odd-cols-4 oj-md-labels-inline">
+
+                        <!-- <div class="oj-flex">
+                            <div class="oj-flex-item">
+                                <oj-label for="nodeName">Name</oj-label>
+                            </div>
+                            <div class="oj-flex-item">
+                                <oj-input-text id="nodeName" placeholder="node name" value='{{selectedNode.id}}'></oj-input-text>
+                            </div>
+                        </div> -->
+                        <div class="oj-flex">
+                            <div class="oj-flex-item">
+                                <oj-label for="lat">Latitude</oj-label>
+                            </div>
+                            <div class="oj-flex-item">
+                                <oj-input-number id="lat"
+                                    placeholder="Latitude for this node"
+                                    value='{{selectedNode.lat}}'
+                                    converter='{
+                                     "type": "number",
+                                     "options": {
+                                         "maximumFractionDigits": "10"
+                                     }
+                                    }'>
+                                </oj-input-number>
+                            </div>
+                        </div>
+
+                        <div class="oj-flex">
+                            <div class="oj-flex-item">
+                                <oj-label for="lon">Longitude</oj-label>
+                            </div>
+                            <div class="oj-flex-item">
+                                <oj-input-number id="lat" placeholder="Longitude for this node"
+                                    value='{{selectedNode.lon}}'
+                                    converter='{
+                                        "type": "number",
+                                        "options": {
+                                            "maximumFractionDigits": "10"
+                                        }
+                                       }'>
+                                </oj-input-number>
+                            </div>
+                        </div>
+                        <div class="oj-flex">
+                                <div class="oj-flex-item">
+                                    <oj-label for="ledColor">LED Color</oj-label>
+                                </div>
+                                <oj-select-one id="ledColor" placeholder="Select the LED Color"
+                                    style="max-width:20em"
+                                    value="{{selectedNode.ledColor}}">
+                                    <oj-option value="red">Red</oj-option>
+                                    <oj-option value="blue">Blue</oj-option>
+                                    <oj-option value="green">Green</oj-option>
+                                </oj-select-one>
+                        </div>
+
+                        <div class="oj-flex">
+                            <div class="oj-flex-item">
+                                <oj-label for="projectLocation">Project Location</oj-label>
+                            </div>
+                            <oj-select-one id="projectLocation" placeholder="Select a location"  options="{{projectLocationsDP}}"
+                                value="{{selectedNode.location.id}}"
+                                on-value-changed=[[locationSelectionHandler]]>
+                            </oj-select-one>
+                        </div>
+
+                        <div class="oj-flex">
+                                <div class="oj-flex-item">
+                                    <oj-label for="hazardous">Is Hazardous?</oj-label>
+                                </div>
+                                <div class="oj-flex-item">
+                                    <oj-input-text id="hazardous" value="[[selectedNode.location.hazardous]]" readonly></oj-input-text>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div slot="footer">
+                <oj-button id="cancelButton" on-click="[[handleNodeEditCancel]]">
+                <span slot="startIcon" class="icon-cross" style="color: red;"></span>
+                        Cancel
+                </oj-button>
+                <oj-button id="saveButton" on-click="[[handleNodeEditSave]]">
+                <span slot="startIcon" class="icon-tick" style="color: green;"></span>
+                    OK
+                </oj-button>
+            </div>
+        </oj-dialog>
+    </div>
+
+</div>
+
+<!-- Node list Template -->
+<!--
+  -->
+
+<script type="text/html" id="nodelist_template">
+
+    <li data-bind="attr: {id: $data['clientId']}" class="node-card">
+        <div class="oj-flex oj-flex-bar">
+            <div class="oj-flex-bar-start oj-sm-align-items-center data-title">
+                <span class="icon-device" style="padding-right: 30px; color: #548456;"></span>
+                <span data-bind="text: identity.nodeId"></span>
+            </div>
+            <div class="oj-flex-bar-end">
+
+                <div style="margin-top: 2px;
+                                padding: 5px;">
+
+                    <oj-button id='button2' chroming='half' on-click='[[$parent.handleEditClicked]]' display='icons'>
+                        <span slot="startIcon" class="icon-edit node-control-icons" style="color: rgba(68, 110, 214, 0.877)">
+                        </span>
+                        Edit Node Configuration
+                    </oj-button>
+                    <oj-button id='button3' chroming='half' on-click='[[$parent.handleRestartClicked]]' display='icons'>
+                        <span slot="startIcon" class="icon-refresh node-control-icons" style="color: rgb(221, 93, 19);"></span>
+                        Restart node client
+                    </oj-button>
+                    <oj-button id='button4' chroming='half' on-click='[[$parent.handleRebootClicked]]' display='icons'>
+                        <span slot="startIcon" class="icon-server node-control-icons" style="color: red;"></span>
+                        Reboot Node
+                    </oj-button>
+                    <oj-button id='button4' chroming='half' on-click='[[$parent.handlePowerOffClicked]]' display='icons'>
+                            <span slot="startIcon" class="icon-remove node-control-icons" style="color: rgb(105, 7, 7);"></span>
+                            Power Off Node
+                        </oj-button>
+                    <oj-button id='button2' chroming='half' on-click='[[$parent.handleSSHClicked]]' display='icons'>
+                            <span slot="startIcon" class="icon-management node-control-icons" style="color: rgba(5, 50, 77, 0.986)">
+                            </span>
+                            SSH
+                    </oj-button>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="oj-flex oj-lg-12">
+            <span class="oj-flex oj-lg-4 oj-md-4 oj-sm-4 data-label">IP Address</span>
+            <div class="oj-flex oj-lg-4 oj-md-4 oj-sm-4 data-label">Location</div>
+            <div class="oj-flex  oj-lg-4 oj-md-4 oj-sm-4 data-label">Devices</div>
+
+            <div class="oj-flex  oj-lg-4 oj-md-4 oj-sm-4 data-text" data-bind="text: identity.ipAddress.address"></div>
+            <div class="oj-flex  oj-lg-4 oj-md-4 oj-sm-4 data-text" data-bind="text: identity.configData.location.name"></div>
+            <div class="oj-flex  oj-lg-4 oj-md-4 oj-sm-4 data-text" data-bind="text: deviceCount"></div>
+
+            <span class="oj-flex oj-lg-4 oj-md-4 oj-sm-4 data-label">Latitude</span>
+            <div class="oj-flex oj-lg-4 oj-md-4 oj-sm-4 data-label">Longitude</div>
+            <span class="oj-flex oj-lg-4 oj-md-4 oj-sm-4 data-label">LED Color</span>
+
+
+            <div class="oj-flex  oj-lg-4 oj-md-4 oj-sm-4 data-text" data-bind="text: identity.configData.lat"></div>
+            <div class="oj-flex  oj-lg-4 oj-md-4 oj-sm-4 data-text" data-bind="text: identity.configData.lon"></div>
+            <div class="oj-flex  oj-lg-4 oj-md-4 oj-sm-4 data-text" data-bind="text:  identity.configData.ledColor"></div>
+
+            <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+                <oj-collapsible id="nodeDevices">
+                    <hr></hr>
+
+                    <div id="h" class="data-label" slot="header">Device Details</div>
+                    <div data-bind="foreach: deviceList">
+                        <div class="oj-flex">
+                            <div class="oj-lg-2 oj-md-2 oj-sm-12" style="max-width:70px;padding-bottom:5px; margin-left:10px;">
+                                <img data-bind="attr: {src: 'images/bluetooth.png', alt: name}" width="20%"></img>
+                            </div>
+                            <div class="oj-lg-10 oj-md-10 oj-sm-12">
+                                <div class="oj-flex row">
+                                    <div class="oj-lg-12">
+                                        <span class="node-device-data-header" data-bind="text: 'MAC '+address"></span>
+                                    </div>
+                                </div>
+                                <div class="oj-flex row" style="margin-bottom: 10px;">
+                                    <div class="oj-lg-3 oj-md-4 oj-sm-12">
+                                        <span class="node-device-data-label">
+                                            <b>Last Seen: </b>
+                                            <span class="node-device-data-text" data-bind="text: $parents[1].timeAgo(timeStamp)"></span>
+                                        </span>
+                                    </div>
+                                    <div class="oj-lg-3 oj-md-4 oj-sm-12">
+                                        <span class="node-device-data-label">
+                                            <b>Connected: </b>
+                                            <span class="node-device-data-text" data-bind="text: connected"></span>
+                                        </span>
+                                    </div>
+                                    <div data-bind="if: timeDistance > 0 " class="oj-lg-3 oj-md-4 oj-sm-12">
+                                        <span class="node-device-data-label">
+                                            <b>Distance: </b>
+                                            <span class="node-device-data-text" data-bind="text: timeDistance + ' meters'"></span>
+                                        </span>
+                                    </div>
+                                    <!-- ko if: batteryLevel -->
+                                    <div class="oj-lg-3 oj-md-4 oj-sm-12">
+                                        <span class="node-device-data-label">
+                                            <b>Battery Level: </b>
+                                            <span class="node-device-data-text" data-bind="text: batteryLevel"></span>
+                                        </span>
+                                    </div>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </oj-collapsible>
+
+
+            </div>
+
+        </div>
+    </li>
+
+</script>
+
+
+<script type="text/html" id="deviceList_template">
+    <li data-bind="attr: {id: $data['address']}" style="width:100%;">
+        <div>
+            <span class="icon-flag-dynamic alert-severity-SIGNIFICANT"></span>
+            <span class="alert-text" data-bind="text: address"></span>
+        </div>
+        <div>
+            <span style="font-size: smaller; color: blue;" data-bind="text: distance"></span>
+            <span style="font-size: small; color: #737373; margin-left: 10px;" data-bind="text: timeStamp"></span>
+        </div>
+
+    </li>
+</script>

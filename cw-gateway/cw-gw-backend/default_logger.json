@@ -1,0 +1,86 @@
+{
+    "appenders": {
+        "fileLog": {
+            "type": "file",
+            "filename": "logs/server.log",
+            "maxLogSize": 1024000,
+            "backups": 2
+        },
+        "clientFileLog": {
+            "type": "file",
+            "filename": "logs/client.log",
+            "maxLogSize": 1024000,
+            "backups": 2
+        },
+        "clientFileLogId": {
+            "type": "file",
+            "filename": "logs/client.log",
+            "layout": {
+                "type": "pattern",
+                "pattern": "[%d] [%p] %c %X{id} - %m"
+            },
+            "maxLogSize": 1024000,
+            "backups": 2
+        },
+        "consoleLog": {
+            "type": "stdout"
+        },
+        "consoleLogId": {
+            "type": "stdout",
+            "layout": {
+                "type": "pattern",
+                "pattern": "%[[%d] [%p] %c %X{id} -%] %m"
+            }
+        },
+        "socketLog": {
+            "type": "socketLogger",
+            "socketProvider": "socketio-server"
+        }
+    },
+    "categories": {
+        "default": {
+            "appenders": ["fileLog", "consoleLog"],
+            "level": "debug"
+        },
+        "client": {
+            "appenders": ["consoleLog", "clientFileLog"],
+            "level": "debug"
+        },
+        "MetawearDevice": {
+            "appenders": ["consoleLogId", "clientFileLogId"],
+            "level": "debug"
+        },
+        "BleScanner": {
+            "appenders": ["consoleLog", "clientFileLog"],
+            "level": "debug"
+        },
+        "RequestHandler": {
+            "appenders": ["consoleLog", "clientFileLog"],
+            "level": "info"
+        },
+        "ConfigDataManager": {
+            "appenders": ["fileLog", "consoleLog", "clientFileLog"],
+            "level": "debug"
+        },
+        "MetaWearFallDownMonitor": {
+            "appenders": ["consoleLog", "clientFileLog"],
+            "level": "debug"
+        },
+        "GenericBLEDevice": {
+            "appenders": ["consoleLog", "clientFileLog"],
+            "level": "debug"
+        },
+        "IBeaconBLEDevice": {
+            "appenders": ["consoleLogId", "clientFileLogId"],
+            "level": "debug"
+        },
+        "Settings": {
+            "appenders": ["fileLog", "consoleLog", "clientFileLog"],
+            "level": "debug"
+        },
+        "SimpleBLEDevice": {
+            "appenders": ["consoleLogId", "clientFileLogId"],
+            "level": "debug"
+        }
+    }
+}

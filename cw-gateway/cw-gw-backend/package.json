@@ -1,0 +1,41 @@
+{
+  "name": "metahub-gw",
+  "version": "0.0.2",
+  "private": true,
+  "dependencies": {
+    "ajv": "^6.2.0",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "debug": "^2.2.0",
+    "eslint": "^4.18.1",
+    "express": "^4.14.0",
+    "iotcs-csl-device": "file:../../downloads/iot/csl/js/iotcs-csl-device-19.1.1.tgz",
+    "kalmanjs": "^1.0.0-beta",
+    "lodash": "^4.17.4",
+    "log4js": "^2.5.3",
+    "mathjs": "^5.3.1",
+    "metawear": "^0.2.0",
+    "morgan": "^1.7.0",
+    "noble": "^1.9.1",
+    "node-pre-gyp": "^0.11.0",
+    "request": "^2.79.0",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "files-exist": "^1.1.0",
+    "gulp": "^4.0.0",
+    "gulp-download": "0.0.1",
+    "gulp-exec": "^3.0.2",
+    "gulp-if-else": "^1.0.3",
+    "gulp-run": "^1.7.1",
+    "yargs": "^11.0.0",
+    "json-stringify-safe": "^5.0.1",
+    "mkdirp": "^0.5.1"
+  }
+}

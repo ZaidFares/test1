@@ -1,0 +1,42 @@
+<%- include('master_header'); -%>
+
+        <div class="jumbotron">
+            <h1>RFID Readers Control Panel</h1>
+            <p class="lead">Here you can add or edit any RFID reader</p>
+            <!-- <a class="btn btn-lg btn-primary" href="/docs/4.5/components/navbar/" role="button">View navbar docs
+                &raquo;</a> -->
+        </div>
+    
+    <a href="/api/gateway/AddReader" class="btn btn-primary float-right" style="margin-bottom: 0.5rem;">Add Reader</a>
+   
+
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Reader Name</th>
+                <!-- <th scope="col">Provisioning File</th> -->
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% let counter=1 %>
+              <% Readers.forEach(item=>{ %>
+                <tr>
+                    <th scope="row"><%= counter++ %></th>
+                    <td><%= item.ReaderName %></td>
+                    <!-- <td><%= item.ProvisioningFile %></td> -->
+                    <td>
+                        <a href="/api/gateway/details/<%= item.Id %>" class="btn btn-success">Details</a>
+                        <a href="/api/gateway/edit_reader/<%= item.Id %>" class="btn btn-warning">Edit</a>
+                        <a href="/api/gateway/delete_reader/<%= item.Id %>" class="btn btn-danger">Delete</a>
+                        
+                    </td>
+                  </tr>
+              <% }) %>
+              
+            </tbody>
+          </table>
+
+<%- include('master_footer'); -%>
+    
